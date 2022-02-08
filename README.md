@@ -8,26 +8,38 @@ The tool provides information on the beacons witnessesed by the miner.
 
 ## Understanding lost witnesses 
 
-Only a fraction of the beacons witnessed by the miner make it to the blockchain. Witnesses can be lost due to:
+Only a fraction of the beacons witnessed by the miner make it to the blockchain. Reasons:
 
 * **Witnesses lost at the local miner**
-  * Failure of delivery to the challenger due to p2p errors. These include:
-    * Timeouts, usually due to relayed challengers.
-    * Challenger P2P address not found in the peer book.
-    * No listen address found for the challenger.
-    * Challenger host unreachable.
-    * Challenger connection refused.
-  * Failure of delivery to the challenger due to miner crashes/reboots.
+  * Failure of delivery to the challenger due to P2P or network errors. These include:
+    * **Timeout**, usually due to a relayed challenger.
+    * Challenger P2P address **not found** in the peer book.
+    * **No listen address** found for the challenger.
+    * Challenger **host unreachable**.
+    * Challenger **connection refused**.
+  * Failure of delivery to the challenger due to **miner crashes/reboots**.
 * **Witnesses lost at the challenger**: After successfuly delivering the witness to the challenger, the transaction fails to complete due to P2P or network problems at the challenger. In such cases, at Helium Explorer All Activity tab, the challenger shows a `Constructed Challenge` event, but not a `Challenged Beaconer` event.
 * **Witnesses lost at the "max hotspots lottery"**: When the number of hotspots that witness a beacon exceed 14 (current `poc_max_witness_per_hop`), only 14 are selected to receive rewards.
 
+This tool lets you analyze the causes for the witnesses lost at the local miner.
 
+## Downloading
+
+You can clone the repository with:
+
+    git clone https://github.com/inigoflores/helium-miner-log-analyzer
+
+Or download the tool with:
+
+    wget -O processlogs.php https://raw.githubusercontent.com/inigoflores/helium-miner-log-analyzer/main/processlogs.php; chmod a+x processlogs.php
+    
 
 ## Tool usage
 
-    $ php ./processlogs.php [-a] [-l] [-s MMMM-dd-yy] [-e MMMM-dd-yy] [-p /FULL/PATH/TO/LOGS]
+    $ ./processlogs.php [-a] [-l] [-s MMMM-dd-yy] [-e MMMM-dd-yy] [-p /FULL/PATH/TO/LOGS]
 
-Options
+
+    Options
 
             -a      Show witness statistics
 
@@ -44,7 +56,7 @@ Options
 
 ### Show the stats for all the log files
 
-    $ php processlogs.php
+    $ ./processlogs.php
     
     Using logs in folder /home/pi/hnt/miner/log/
 
@@ -72,7 +84,7 @@ Options
 
 ### Show list of all witnesses between two dates
 
-    admin@ancient-lipstick:~ $ php processlogs.php -l -s 2022-02-07 -e 2022-02-08
+    $ ./processlogs.php -l -s 2022-02-07 -e 2022-02-08
     
     Using logs in folder /home/pi/hnt/miner/log/
     
@@ -129,5 +141,5 @@ Options
 ## To Do
 
 * Add support form miners that don't have the log folders from the docker image mapped to the host.
-* Add option to export to CSV
+* Add option to export to CSV.
 * Run as a service and store data in a local database.
