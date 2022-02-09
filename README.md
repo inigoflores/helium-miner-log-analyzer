@@ -2,23 +2,27 @@
 
 Small tool that extracts witness data from Helium miner logs.
 
+It currently works for the **Pisces 100** and miner version `miner-arm64_2022.01.29.0_GA`. It may work for other miners that have the docker log folder mapped to the host, for which you will need to provide the folder path as a command-line argument.
+
+It will soon support any other SSH enabled miners.
+
 ## Description
 
 The tool provides information on the beacons witnessesed by the miner. 
 
 ## Understanding lost witnesses 
 
-Only a fraction of the beacons witnessed by the miner make it to the blockchain. Reasons:
+Only a fraction of the beacons witnessed by the miner make it to the blockchain.
 
-* **Witnesses lost at the local miner**
-  * Failure of delivery to the challenger due to P2P or network errors. These include:
+Reasons:
+
+* **Witnesses lost at the local miner** bacause of failure of delivery to the challenger due to:<br/><br/>
+  * **P2P or network errors**. These include:<br/><br/>
     * **Timeout**, usually due to a relayed challenger.
     * Challenger P2P address **not found** in the peer book.
-    * **No listen address** found for the challenger.
-    * Challenger **host unreachable**.
-    * Challenger **connection refused**.
-  * Failure of delivery to the challenger due to **miner crashes/reboots**.
-* **Witnesses lost at the challenger**: After successfuly delivering the witness to the challenger, the transaction fails to complete due to P2P or network problems at the challenger. In such cases, at Helium Explorer All Activity tab, the challenger shows a `Constructed Challenge` event, but not a `Challenged Beaconer` event.
+    * Other challenger related problems, like "no listen address", "host unreachable" or "connection refused".<br/><br/>
+  * **Miner crashes/reboots**.<br/><br/>
+* **Witnesses lost at the challenger**: After successfuly delivering the witness to the challenger, the transaction fails to complete due to P2P or network problems at the challenger. In such cases, at Helium Explorer All Activity tab, the challenger shows a `Constructed Challenge` event, but not a `Challenged Beaconer` event.<br/><br/>
 * **Witnesses lost at the "max hotspots lottery"**: When the number of hotspots that witness a beacon exceed 14 (current `poc_max_witness_per_hop`), only 14 are selected to receive rewards.
 
 This tool lets you analyze the causes for the witnesses lost at the local miner.
@@ -49,7 +53,7 @@ Or download the tool with:
 
             -e      Specify an end date in MMMM-dd-yy format
 
-            -p      Specify a full path to the miner logs
+            -p      Specify a full path to the miner logs folder
 
 
 ## Examples
