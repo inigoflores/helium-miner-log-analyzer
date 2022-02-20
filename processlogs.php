@@ -161,9 +161,9 @@ function generateStats($beacons) {
     $percentageFailedMaxRetry = round($failedMaxRetry/$total*100,2);
     $percentageFailedIncomplete = round($failedIncomplete/$total*100,2);
 
-    $percentageFailedNotFound = round($failedNotFound/$failedMaxRetry*100,2);
-    $percentageFailedTimeout = round($failedTimeout/$failedMaxRetry*100,2);
-    $percentageFailedOther = round($totalFailedOther/$failedMaxRetry*100,2);
+    $percentageFailedNotFound = round($failedNotFound/$total*100,2);
+    $percentageFailedTimeout = round($failedTimeout/$total*100,2);
+    $percentageFailedOther = round($totalFailedOther/$total*100,2);
 
 
     $percentageNotRelayed = round($notRelayed/$total*100,2);
@@ -210,13 +210,14 @@ function generateStats($beacons) {
  * @return string
  */
 function generateList($beacons) {
-    $output = "Date                    | Session    | RSSI | Freq  | SNR   | Challenger                                           | Relay | Status            | Fails | Reason \n";
+    $output = "Date                    | Session    | RSSI | Freq  | SNR   | Noise  | Challenger                                           | Relay | Status            | Fails | Reason \n";
     $output.= "-------------------------------------------------------------------------------------------------------------------------------------------------------------- \n";
 
     foreach ($beacons as $beacon){
 
         $rssi = str_pad($beacon['rssi'], 4, " ", STR_PAD_LEFT);
         $snr = str_pad($beacon['snr'], 5, " ", STR_PAD_LEFT);
+        $noise = str_pad(number_format((float) ($beacon['rssi'] - $beacon['snr']),1),6,  " ", STR_PAD_LEFT);
         $status = str_pad($beacon['status'], 17, " ", STR_PAD_RIGHT);
         $failures = str_pad(empty($beacon['failures'])?0:$beacon['failures'], 5, " ", STR_PAD_LEFT);
         $challenger = @str_pad($beacon['challenger'],52, " ", STR_PAD_RIGHT);
@@ -225,7 +226,7 @@ function generateList($beacons) {
         $reason = @$beacon['reason'];
         $session = str_pad($beacon['session'],10, " ", STR_PAD_LEFT);;
 
-        $output.=@"{$beacon['datetime']} | {$session} | {$rssi} | {$beacon['freq']} | {$snr} | {$challenger} | $relayed | {$status} | {$failures} | {$reasonShort} \n";
+        $output.=@"{$beacon['datetime']} | {$session} | {$rssi} | {$beacon['freq']} | {$snr} | {$noise} | {$challenger} | $relayed | {$status} | {$failures} | {$reasonShort} \n";
 
     }
     return $output;

@@ -15,11 +15,6 @@ It should work for other miners that have the logs folder mapped to the host, fo
 
 If you want me to add your miner, please create an issue and provide me with the full path to the console.log folder.
 
-
-## Description
-
-The tool provides information on the beacons witnessesed by the miner. 
-
 ## Understanding lost witnesses 
 
 Only a fraction of the beacons witnessed by the miner make it to the blockchain.
