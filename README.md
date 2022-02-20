@@ -67,85 +67,79 @@ Or download the tool with:
 
     $ ./processlogs.php
     
-    Using logs in folder /home/pi/hnt/miner/log/
-
-
+    Using logs in folder /home/pi/hnt/miner/log/ 
+    
     General Witnesses Overview
     ----------------------------------
-    Total witnesses                   =   176
-    Succesfully delivered             =   129  (73.3%)
-    Failed                            =    47  (26.7%)
-    ├── Max retry    =   37 (21.02%)
-    └── Crash/reboot =   10  (5.68%)
+    Total witnesses                   =   263
+    Succesfully delivered             =   225 (85.55%)
+    Failed                            =    38 (14.45%)
+    ├── Max retry    =   38 (14.45%)
+    └── Crash/reboot =    0     (0%)
     
     Max Retry Failure Reasons
     ----------------------------------
-    Timeout                           =    31 (83.78%)
-    Not Found                         =     5 (13.51%)
-    Other challenger issues           =     1   (2.7%)
+    Timeout                           =    29 (11.03%)
+    Not Found                         =     1  (0.38%)
+    Other challenger issues           =     8  (3.04%)
     
     Challengers
     ----------------------------------
-    Not Relayed                       =   139 (78.98%)
-    Relayed                           =    27 (15.34%)
-    Unknown Relay Status              =    10  (5.68%)
+    Not Relayed                       =   244 (92.78%)
+    Relayed                           =    19  (7.22%)
+    Unknown Relay Status              =     0     (0%)
 
 
 ### Show list of all witnesses between two dates
 
-    $ ./processlogs.php -l -s 2022-02-07 -e 2022-02-08
+    $ ./processlogs.php -l -s 2022-02-20 
     
     Using logs in folder /home/pi/hnt/miner/log/
     
     Date                    | Session    | RSSI | Freq  | SNR   | Challenger                                           | Relay | Status            | Fails | Reason
     -------------------------------------------------------------------------------------------------------------------------------------------------------------- 
-    2022-02-07 00:05:34.025 |  0.29017.0 |  -86 | 867.3 |   6.0 | 11niYWTvewEMcdPK59Tazqhv4kCZ3Gpoe3yVZnfRgY9pmzML8ky  | yes   | incomplete        |     7 | timeout
-    2022-02-07 00:36:28.908 |    0.615.1 | -133 | 867.1 | -22.0 | 11gRRMR29BW78XitZf6cs7y3gBmwupx4eoSSNQs3EziUSMsbmUX  | no    | incomplete        |     4 | no listen address
-    2022-02-07 00:45:16.905 |   0.1576.1 | -108 | 868.1 |   0.2 | 11UvTXVboFiqtHMMxsf5oEyAhj8B3qsBjKkATR5ePN6XofHocai  | no    | successfully sent |     1 |  
-    2022-02-07 01:35:01.192 |   0.8380.1 | -132 | 867.9 | -21.8 | 112F2QZoZegus7vLVPUkMDUtxYBm6nTjqdJyo3LPwxNoZRMi6sCM | no    | successfully sent |     1 |  
-    2022-02-07 01:38:39.908 |   0.8782.1 | -121 | 867.3 | -15.5 | 11FeRqqXFKRBoN6XJVP4ANYBFfNKCWGgd9grPHo9pUp5q1fK8QJ  | no    | successfully sent |     1 |  
-    2022-02-07 01:39:20.252 |   0.8825.1 | -113 | 867.9 |  -2.0 | 112KZA9reNWQnq9qhG5PMn7x9f2p9dc35LNCkiBcD5gjb7UghYog | no    | successfully sent |     1 |  
-    2022-02-07 01:47:17.255 |   0.9732.1 | -114 | 868.3 |  -7.8 | 11zR51xa3snWKK3MvMTuqxdMd2pEBr5fi1aoTh5opWQoGpdkZ2n  | no    | successfully sent |     1 |  
-    2022-02-07 02:46:57.971 |  0.17587.1 | -124 | 867.7 | -12.5 | 1122TC5BqLdnm1EQwtkigTYF6iwpdQTkvsa2MkkBzvkfaQPimUhN | no    | successfully sent |     0 |  
-    2022-02-07 02:55:54.617 |  0.18484.1 | -130 | 867.5 | -18.8 | 11pU9oyLcCRm52vaoXYaeux42iBBuZpZQLHE9VpmKmfsTZsQE6i  | no    | successfully sent |     1 |  
-    2022-02-07 03:03:50.745 |  0.18766.1 | -119 | 867.5 | -12.8 | 11SSEQrNh4HFyDZQVbHgN37gY93JhcmZ41QSL9VRmFGk6CKe6vd  | no    | failed max retry  |    10 | timeout
-    2022-02-07 03:23:37.592 |  0.21872.1 | -133 | 867.7 | -22.2 | 115Pygt41v6Q62v4v9SwN7kZqznnWK9KUzDkhghwKobqVdrqSSS  | no    | successfully sent |     0 |  
-    2022-02-07 03:39:11.445 |  0.23706.1 | -134 | 867.7 | -22.8 | 11hbSHhDpxF8q24sQHXsv6hhduoEvSV78sZwuASz3L2aLcan3BS  | no    | successfully sent |     2 |  
-    2022-02-07 03:40:09.606 |  0.22970.1 | -129 | 867.9 | -17.0 | 112B5gsKJQNakrcbXjE7Q4eJ3hvnSqzVUjNaSACqbxoyM6KtNDba | yes   | failed max retry  |    10 | timeout
-    2022-02-07 04:16:57.890 |  0.27833.1 | -124 | 867.7 | -12.0 | 112nPUEawDi68p2P17uCMCGqTwqZEVibZYAZj8QU7s45anemEQJw |       | incomplete        |     1 | not found
-    2022-02-07 04:23:03.160 |  0.27676.1 | -130 | 867.7 | -19.2 | 112nfNdbiVqFq7UspMcWFTe732T4bQ8zLGcxPa47c2ecBX8x2mdZ | yes   | failed max retry  |    10 | timeout
-    2022-02-07 04:28:04.779 |  0.29002.1 | -127 | 867.1 | -15.8 | 119urtr1g1mf8Hwp2zZY9ac67Bx7U9FxWR8yA3abDJm1VHRZJ5j  | no    | successfully sent |     0 |  
-    2022-02-07 04:34:54.667 |  0.29737.1 | -111 | 867.1 |  -1.2 | 1128adyYt7fGn6RuGctLyLmk8jQeSmjvGoRFvHkbm4Cv1P6BhAGD | no    | successfully sent |     0 |  
-    2022-02-07 04:41:31.663 |  0.29558.1 | -126 | 867.7 | -14.8 | 112WoqNjPxUe5H8kv3aR6WVUKccAToBVEAmtETyzHdtyc6LsoEm7 | yes   | failed max retry  |    10 | timeout
-    2022-02-07 04:55:18.510 |  0.32320.1 | -113 | 867.9 |  -2.0 | 112eejjn6T4F9QwonttAR7ytEeTFta7LBuNRDaUAeKdUE4t9Q5pJ | no    | successfully sent |     2 |  
-    2022-02-07 15:13:12.859 |  0.16228.6 | -130 | 867.5 | -19.2 | 11DMBKhcZyRqxKNJTRM87jYiuXn9ZvUs9g4oyPFtRgyffZ3EoZz  | yes   | failed max retry  |    10 | timeout
-    2022-02-07 15:13:29.813 |  0.17080.6 | -118 | 868.1 | -10.5 | 11DYhps5kpkoQWrKqsQk2qp8pGQSznr7nG1tZZiXpZX23Q13BaY  | no    | successfully sent |     0 |  
-    2022-02-07 15:15:49.157 |  0.17463.6 | -108 | 868.1 |  -1.2 | 11v7GAnsegKafk2xRLPBe5c23dJdgyNtqVRdL7jNKNTVpUd47RP  | no    | successfully sent |     0 |  
-    2022-02-07 15:41:10.539 |  0.19480.6 | -120 | 868.1 | -12.5 | 11cg19DSHHq4CH47j13KZgBNKLAk1XyJvXymmBzdL1uhnuhhmkB  | yes   | failed max retry  |    10 | timeout
-    2022-02-07 15:52:15.475 |  0.20238.6 | -127 | 867.7 | -16.2 | 112Tqn6sXrtq6y7rquCgWDXqUyUhURZEieKrUi54Rbyd54hjN3ho | yes   | failed max retry  |    10 | timeout
-    2022-02-07 16:03:33.531 |  0.22011.6 | -108 | 867.7 |   0.0 | 11ksFDK45UKQpQBDD8GXxCen6tGiYN2TAkBPHzgS5bP2MrZbeua  | no    | successfully sent |     1 |  
-    2022-02-07 16:11:21.482 |  0.22942.6 | -115 | 867.1 |  -6.5 | 11zxT6uTmuUWpF6syQ4TivUQBXidCcoBAb73nTyJQprkv34b1Fd  | no    | successfully sent |     1 |  
-    2022-02-07 16:23:15.755 |  0.24723.6 | -113 | 868.3 | -10.5 | 112rCjPi82RrfX9nrp4v6kboTnybxtzEqJuoCWh7pGCWS77dtx7W | no    | successfully sent |     0 |  
-    2022-02-07 16:53:39.602 |  0.28278.6 | -128 | 867.7 | -16.5 | 1126rKBPY9JVW7yUuT5JmnScsRES9Gx74Yp4DdXKcB6FR8V6UP3C | no    | successfully sent |     0 |  
-    2022-02-07 17:28:21.098 |  0.32485.6 | -134 | 867.7 | -22.0 | 11E7hUwqQ19eWWK8swEH1x1qYmZ2zDovfhde4xGZEb5LArJwRRH  | no    | successfully sent |     1 |  
-    2022-02-07 17:29:36.457 |  0.31650.6 | -104 | 868.5 | -19.2 | 112RD81VjLFxf5MCcQ6TC8mxrnK7G7tq3mQDXAFWNTmTmx4p7RAu | yes   | failed max retry  |    10 | timeout
-    2022-02-07 17:57:16.654 |   0.3148.7 | -130 | 867.5 | -19.5 | 11DQJRHXQb2HsTsUm3ypWdaK3v8pg1bCZ5fao1f3jnFWtZeKWeV  | no    | successfully sent |     0 |  
-    2022-02-07 18:03:36.011 |   0.3170.7 | -119 | 868.3 | -14.2 | 112bzG9JD48TNiZWu44EiC7ptw8QeGRzRFoo6az7jus3VFD38PwQ | yes   | failed max retry  |    10 | timeout
-    2022-02-07 18:13:02.536 |   0.5087.7 | -125 | 867.9 | -14.2 | 112nQV6DjmfwkieWWjgVsx3HQft6HoripXPWEhdoeZGSPsntdbGo | no    | successfully sent |     0 |  
-    2022-02-07 18:36:11.809 |   0.7057.7 | -120 | 868.3 | -12.8 | 112mcdkg1pXXf9z82gt1UjCdFaBuUrfZ3DXy1NM3xHzMeGmoLT3d | yes   | failed max retry  |    10 | timeout
-    2022-02-07 18:40:04.299 |   0.7562.7 |  -98 | 867.7 |   4.5 | 112XXXPsNtmAPDjsGK6ep5zFrn9gquUpSA642XxTMFscHzCrAgWF | no    | failed max retry  |    10 | timeout
-    2022-02-07 19:29:06.344 |  0.14484.7 | -125 | 867.7 | -13.2 | 11xcryDafroaWNY37tmbMwSTmjuY9vCaZewfZRbUohqzSKHeGKy  | no    | successfully sent |     2 |  
-    2022-02-07 19:46:40.182 |  0.16224.7 | -126 | 868.3 | -20.2 | 11266VEDsHYoKYqZgrKH8XUM63rM7a4Qw3tR7hvYhnqZM2H78KSC | no    | successfully sent |     1 |  
-    2022-02-07 19:58:57.512 |  0.17917.7 | -127 | 867.9 | -15.5 | 11M9sQ4PSoHr9KkjBdB3EKwfQeD3nadEPJso2593Ay7786SxQD8  | no    | successfully sent |     0 |  
-    2022-02-07 20:09:17.051 |  0.19104.7 | -128 | 867.7 | -16.8 | 112VV6TV2UU6FRsrEBdLQRZUnVQsQFMtnSFPTJ4QXw4U517WU4AT | no    | successfully sent |     1 |  
-    2022-02-07 21:39:50.709 |  0.31786.7 |  -98 | 867.7 |   7.0 | 11YWNBxXXFK3s63Wz5L6Z6uoZ6DHGb1DRnF5nVigfhj9sqiiYWw  | no    | successfully sent |     0 |  
-    2022-02-07 21:48:47.593 |  0.32329.7 | -127 | 868.3 | -18.8 | 1121tjTVJsfBUtxH5NNzjG1hA52Q7Wr62GmpnQkJa4Pf8GCdFT2N | no    | successfully sent |     3 |  
-    2022-02-07 21:49:49.562 |     0.46.8 | -127 | 868.3 | -18.8 | 112BGNwn3SVCyNWfZTkyDUuLXRysnpycgLrjtdJKjDVCpuf2d6eq | no    | successfully sent |     0 |  
-    2022-02-07 22:06:06.238 |   0.2695.8 | -125 | 867.9 | -12.5 | 112aetNrJVQXKNyXL7jdKG7qRKzBoEadhKMfK9BTRY4sFJtknXaZ | no    | successfully sent |     0 |  
-    2022-02-07 22:30:25.674 |   0.5418.8 |  -55 | 867.1 |   8.0 | 11QhFjuehz8QWLRn5qR9RjmDFxou6XpDQmwZzDgDJzMiC5sKLnV  | no    | successfully sent |     0 |  
-    2022-02-07 23:14:10.411 |  0.10702.8 | -133 | 867.1 | -22.2 | 11pqVvosA8dDAVUSbNNLLNozjQshEscVzrnz2LTCzbaNkziMACw  | no    | successfully sent |     1 |  
-    2022-02-07 23:41:39.322 |  0.13323.8 | -123 | 867.5 | -11.5 | 112Af5GCqsXsqaE4AWwiB5D5ARi9s8GwGrGB4h8dDdMiqTHteUUi | no    | successfully sent |     2 |  
-
+    2022-02-20 04:19:11.348 | 0.25975.45 | -114 | 867.1 |  -1.8 | -112.2 | 11znrX7MGqUVnd2k3vGdLX91LAckZkqkFaL6i4aoWN2cd8E3Mk5  | no    | successfully sent |     1 |
+    2022-02-20 04:49:31.411 | 0.31449.45 | -100 | 867.9 |   4.8 | -104.8 | 11Gex6jFZfiYkoPQ87op9SGECSKGydZzSCz7kkywK5CG48V8tUS  | no    | successfully sent |     1 |
+    2022-02-20 05:02:13.911 |  0.1032.46 | -105 | 868.1 |   2.2 | -107.2 | 112c1TTd7k7Lmwpjdx3GdPTpxk5iyLaJuiJc3a8jN54CHPuwASyE | no    | successfully sent |     1 |
+    2022-02-20 05:22:36.083 |  0.4394.46 | -133 | 867.7 | -19.0 | -114.0 | 112biVDpww7iWqgXp5MGRd43G2XKNbFVor8ZiyFn6wd7cJPvXLE2 | no    | successfully sent |     4 |
+    2022-02-20 05:38:09.854 |  0.7595.46 | -124 | 867.3 | -18.5 | -105.5 | 119o3eRSBrMthjGJKbrsZzs78dtdQuBN1oH5L7R5oGSY619maqd  | no    | successfully sent |     0 |
+    2022-02-20 06:09:41.288 |  0.6097.46 | -128 | 867.7 | -14.0 | -114.0 | 112uoTfKktCUTBhqohr2K1PUgGg5Nb3YqDjH9hYPCpt4xHnzjSRn | no    | successfully sent |     1 |
+    2022-02-20 06:20:46.867 |  0.1481.46 | -105 | 867.7 |   4.5 | -109.5 | 11PyLymSPsn4ksChXDjU29HcZ5Vn1z4W3DrNe5EAqyLWVqhYx8D  | no    | successfully sent |     0 |
+    2022-02-20 06:24:20.695 | 0.14977.46 | -108 | 868.1 |   2.0 | -110.0 | 1121X95UuHpS5Bk2LSUtwWo6GefMzU6YyRHBke9F9RrcUvNT2s63 | no    | successfully sent |     0 |
+    2022-02-20 06:51:10.031 | 0.19652.46 | -128 | 867.1 | -15.0 | -113.0 | 112rW9WtJr43877AZP5r5tAQEg23KDikWNyZeXEtkmnm8dzmJqPx | no    | successfully sent |     0 |
+    2022-02-20 06:54:08.130 | 0.19916.46 | -119 | 868.1 | -23.8 |  -95.2 | 112TZqXZmbUHs6CH24ifCY2FwzBGWcEmiADdLbV7Zt9ami6rEJyx | no    | successfully sent |     0 |
+    2022-02-20 06:56:22.342 | 0.20257.46 | -125 | 867.9 | -10.2 | -114.8 | 11sguTvedrPY9VvdW3KqY8rYW3WgvG9KvSTu7tvkediiAnUacfJ  | no    | successfully sent |     1 |
+    2022-02-20 07:01:23.343 | 0.21164.46 | -120 | 867.3 | -13.5 | -106.5 | 112mJqMfqYzG8dpp47fv6vnJgPTEsmoopiJc3KzzwgrJeeHEydAb | no    | successfully sent |     1 |
+    2022-02-20 07:34:28.668 | 0.25319.46 | -135 | 867.1 | -21.0 | -114.0 | 11LEnQCBWkFW53FtfcppHdxSdUENvxZCXPyupDSFfZvzvqgbNRx  | no    | failed max retry  |    10 | timeout
+    2022-02-20 07:35:27.100 | 0.26440.46 | -118 | 867.3 |  -8.8 | -109.2 | 11m28NPmPnQqj69zXUVQUbykgo7zTMnyuYmrVfx7bKoJZRLbeds  | no    | successfully sent |     0 |
+    2022-02-20 07:38:16.972 | 0.27228.46 |  -93 | 867.3 |  -9.2 |  -83.8 | 11c7fu69LWdW7gobTQhsQzr7rgAWMoG5Y99iToxpAwRxHYKumUf  | no    | successfully sent |     0 |
+    2022-02-20 07:38:46.537 | 0.27179.46 |  -19 | 868.3 |   9.2 |  -28.2 | 11c7fu69LWdW7gobTQhsQzr7rgAWMoG5Y99iToxpAwRxHYKumUf  | no    | successfully sent |     1 |
+    2022-02-20 07:50:04.167 | 0.28432.46 | -115 | 868.1 |  -5.0 | -110.0 | 11BJmGHrJ8p5WiUQLyWi5zRzVaMF9LZXeBrGymZkwU1ZrbBDSbA  | no    | failed max retry  |    10 | connection refused
+    2022-02-20 07:50:47.934 | 0.27968.46 | -128 | 867.3 | -19.2 | -108.8 | 112N8Me8mzB8ReUWrtkJUknm5jtE2HopuAXY6KkQC6N1cBb5YybZ | no    | successfully sent |     1 |
+    2022-02-20 08:08:56.199 | 0.32135.46 | -110 | 867.3 |   0.8 | -110.8 | 112b2XhAfFbqfSWMJWRBtWiQmr3hy2J9wtLX6Jb8Ma61H67Jr8ih | no    | successfully sent |     0 |
+    2022-02-20 08:25:49.989 |  0.2352.47 |  -19 | 867.7 |   8.2 |  -27.2 | 11vuHDVp6B6hi5Tv3mV286sCjcANuHGxwNTEwHuFvPtGH1JcN45  | no    | successfully sent |     0 |
+    2022-02-20 08:27:39.903 |  0.2293.47 | -130 | 867.3 | -18.2 | -111.8 | 11jJ5pCEZ2z6aW8nzvWHgWVp5Q3Ny4UbXSNQXhddb8pNHgYSJZM  | no    | successfully sent |     1 |
+    2022-02-20 08:30:56.630 |  0.1001.47 | -137 | 867.7 | -23.0 | -114.0 | 11G8n7hdnCjXHSYuTTuUzXgDDwFXiVXrt57PN5m2zUBmn8DXY3y  | no    | failed max retry  |    10 | no listen address
+    2022-02-20 08:35:37.009 |  0.2591.47 | -102 | 867.1 |   3.0 | -105.0 | 1123jR8U5ohTxPeYiPKrjCfmxzSJASEEFAT4q7JuSspfcBp211ZG | no    | successfully sent |     0 |
+    2022-02-20 08:39:45.705 |  0.3716.47 | -123 | 868.1 | -13.2 | -109.8 | 11V33zM7tq5JGR3ZsR6WbHgTFCfPmJfu6xukAXfG6YPjXsJVWD2  | no    | successfully sent |     1 |
+    2022-02-20 08:40:54.342 |   0.817.47 | -113 | 867.1 |  -0.5 | -112.5 | 112jkcPTa1cqAcTjsYyGr7ikmhnhoJdZgcD1Ho2dmSeCcAyNZwVw | no    | successfully sent |     1 |
+    2022-02-20 08:48:43.159 |  0.5583.47 | -131 | 867.5 | -20.0 | -111.0 | 1128iApaSAAFfdCWMtXNY5oiexmGG9enw3oNmohKu1R5fzd9VzQf | no    | successfully sent |     0 |
+    2022-02-20 08:49:13.328 |  0.5586.47 | -115 | 868.3 |  -7.5 | -107.5 | 11252SfKNhTcQjYbpoywFHeYUML8C6LQP11fXES4zyuwha6vodgn | no    | successfully sent |     1 |
+    2022-02-20 09:20:21.776 | 0.11383.47 | -133 | 867.3 | -24.5 | -108.5 | 112HCrae8bb94PbABVCqgBwcnVdcpbsi9V7SDHKUsjiSQnyikDLr | no    | successfully sent |     1 |
+    2022-02-20 09:26:42.491 | 0.13453.47 |  -69 | 867.3 |   7.2 |  -76.2 | 11wptzrZdYV3pZzG3XSKHcLRFNx3GFfJ3pvvzNijbpsU5LcbSdW  | no    | successfully sent |     1 |
+    2022-02-20 09:34:08.566 | 0.14213.47 | -107 | 867.5 |  -1.8 | -105.2 | 112hGkwtk1J15JcsSZSMaEa9WeL5mcZicM3RaJHtEqhmZE9bV8iY | no    | successfully sent |     1 |
+    2022-02-20 09:48:45.665 | 0.14942.47 | -129 | 867.9 | -14.0 | -115.0 | 112Z2Z9UvDESgx6Bg2ZVbonWuHFinbp2XGRLANLCdoXyc3uTEEih | no    | failed max retry  |    10 | timeout
+    2022-02-20 09:53:15.698 | 0.17435.47 | -127 | 867.5 | -13.0 | -114.0 | 112J8NsUXn11dRMmS9yvp2G9LGqEaGAgZnmp2R3PKv7pbr2XiTtd | no    | successfully sent |     1 |
+    2022-02-20 10:56:23.532 | 0.27998.47 | -112 | 867.7 |   0.5 | -112.5 | 1122t3Z4ERK3CdSBnVVTj3sLkzWfhjMDRzsUrWknXmzm1Xn2gQoz | no    | successfully sent |     0 |
+    2022-02-20 11:26:50.735 | 0.19570.47 | -128 | 868.3 | -19.2 | -108.8 | 112nHRtEZ1z5gbBtquU9WLQVsLNdiprWRT44G6L9wU2NoFV3VCFo | yes   | failed max retry  |    10 | timeout
+    2022-02-20 11:40:33.536 |  0.1662.48 | -120 | 867.9 |  -5.8 | -114.2 | 11aa6p7q12rRp9gNtWQ84xddYy7UKSaRshCQ3EE1ByoyUC9jg14  | yes   | failed max retry  |    10 | timeout
+    2022-02-20 11:44:13.400 |  0.3442.48 | -135 | 867.3 | -22.8 | -112.2 | 112VkmtFD6CtWyaj6Qk1wwQobSEWLDhruY2j8dM8oKwbjYHG9mNC | no    | successfully sent |     0 |
+    2022-02-20 12:30:24.369 | 0.10811.48 | -132 | 867.7 | -19.2 | -112.8 | 1149GZrwT3JfyLusW8EE1VLAdLMGT6ExstJkLp4yCTA6f8VnkMy  | no    | successfully sent |     2 |
+    2022-02-20 12:58:20.550 |  0.8020.48 | -120 | 867.9 |  -7.2 | -112.8 | 112jjLnbMsrqTWKHCbpKbZN7hFW9sLox9toQYKUD8hRD9eoX1knx | no    | successfully sent |     1 |
+    2022-02-20 13:10:05.479 | 0.17528.48 | -106 | 868.1 |   1.5 | -107.5 | 112azQheNgRwwWJztykdygnz9TDCjJXfpBtr7S99jsk4yhiXnDge | no    | failed max retry  |    10 | timeout
+    2022-02-20 13:14:22.705 | 0.14186.48 | -127 | 867.5 | -19.8 | -107.2 | 1128danF2LZfKKNaRuHgWEr2PmqWXYzhLsTdBTsYjqPYzd2bYdbF | no    | failed max retry  |    10 | timeout
+    2022-02-20 13:20:52.881 | 0.20242.48 | -128 | 867.3 | -18.2 | -109.8 | 112Cech1D9waERW1toMjZsJWmtPCm8oAdAiKgp4es3rQ75vZSLTj | no    | successfully sent |     1 |
+    2022-02-20 13:30:21.538 | 0.19200.48 | -116 | 867.1 |  -3.8 | -112.2 | 112n7s9VJDjYgL4VeNTWYowyvZiChVLwDScndpdiBLPu9SAgtnuC | no    | successfully sent |     1 |
 
 ## To Do
 
