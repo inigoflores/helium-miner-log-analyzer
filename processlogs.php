@@ -14,8 +14,19 @@
 
 $logsFolder = './';
 
-if (is_dir("/home/pi/hnt/miner/log")) { //Pisces P100
-    $logsFolder = '/home/pi/hnt/miner/log/';
+$logsFolders = [
+    'Pisces P100'    => '/home/pi/hnt/miner/log/',
+    'Sensecap M1'    => 'in /mnt/data/docker/volumes/xxxxxxx_miner-log/_data/',
+    'Milesight UG65' => '/mnt/mmcblk0p1/miner_data/log/', //adding it for future use,as PHP and opkg are missing (OpenWrt)
+    'Controllino'    => '/var/log/miner/',
+    'Panther X2'     => '/opt/panther-x2/miner_data/log'
+];
+
+foreach ($logsFolders as $folder){
+    if (is_dir($folder)) {
+        $logsFolder = $folder;
+        break;
+    }
 }
 
 $startDate = "2000-01-01";

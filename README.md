@@ -2,9 +2,19 @@
 
 Small tool that extracts witness data from Helium miner logs.
 
-It currently works for the **Pisces 100** and miner version `miner-arm64_2022.01.29.0_GA`. It may work for other miners that have the docker log folder mapped to the host, for which you will need to provide the folder path as a command-line argument.
+It currently works for miner version `miner-arm64_2022.01.29.0_GA`. 
 
-It will soon support any other SSH enabled miners.
+It runs out of the box for the following miners:
+
+* Controllino
+* Panther X2
+* Pisces P100
+* Sensecap M1
+
+It should work for other miners that have the logs folder mapped to the host, for which you will need to provide the folder path as a command-line argument.
+
+If you want me to add your miner, please create an issue and provide me with the full path to the console.log folder.
+
 
 ## Description
 
