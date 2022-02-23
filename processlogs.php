@@ -19,7 +19,7 @@ $logsFolders = [
     'Sensecap M1'    => 'in /mnt/data/docker/volumes/xxxxxxx_miner-log/_data/',
     'Milesight UG65' => '/mnt/mmcblk0p1/miner_data/log/', //adding it for future use,as PHP and opkg are missing (OpenWrt)
     'Controllino'    => '/var/log/miner/',
-    'Panther X2'     => '/opt/panther-x2/miner_data/log'
+    'Panther X2'     => '/opt/panther-x2/miner_data/log/'
 ];
 
 foreach ($logsFolders as $folder){
@@ -211,7 +211,7 @@ function generateStats($beacons) {
  */
 function generateList($beacons) {
     $output = "Date                    | Session    | RSSI | Freq  | SNR   | Noise  | Challenger                                           | Relay | Status            | Fails | Reason \n";
-    $output.= "-------------------------------------------------------------------------------------------------------------------------------------------------------------- \n";
+    $output.= "------------------------------------------------------------------------------------------------------------------------------------------------------------------------ \n";
 
     foreach ($beacons as $beacon){
 

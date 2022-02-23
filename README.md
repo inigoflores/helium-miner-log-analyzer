@@ -96,7 +96,7 @@ Or download the tool with:
     
     Using logs in folder /home/pi/hnt/miner/log/
     
-    Date                    | Session    | RSSI | Freq  | SNR   | Challenger                                           | Relay | Status            | Fails | Reason
+    Date                    | Session    | RSSI | Freq  | SNR   | Noise  | Challenger                                           | Relay | Status            | Fails | Reason
     -------------------------------------------------------------------------------------------------------------------------------------------------------------- 
     2022-02-20 04:19:11.348 | 0.25975.45 | -114 | 867.1 |  -1.8 | -112.2 | 11znrX7MGqUVnd2k3vGdLX91LAckZkqkFaL6i4aoWN2cd8E3Mk5  | no    | successfully sent |     1 |
     2022-02-20 04:49:31.411 | 0.31449.45 | -100 | 867.9 |   4.8 | -104.8 | 11Gex6jFZfiYkoPQ87op9SGECSKGydZzSCz7kkywK5CG48V8tUS  | no    | successfully sent |     1 |
