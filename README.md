@@ -15,22 +15,26 @@ It should work for other miners that have the logs folder mapped to the host, fo
 
 If you want me to add your miner, please create an issue and provide me with the full path to the console.log folder.
 
-## Understanding lost witnesses 
+Alternatively, you can run the tool inside docker.
 
-Only a fraction of the beacons witnessed by the miner make it to the blockchain.
+## Requirements
 
-Reasons:
+The script needs PHP 7 to run. On Debian based miners you can install it with:
 
-* **Witnesses lost at the local miner** bacause of failure of delivery to the challenger due to:<br/><br/>
-  * **P2P or network errors**. These include:<br/><br/>
-    * **Timeout**, usually due to a relayed challenger.
-    * Challenger P2P address **not found** in the peer book.
-    * Other challenger related problems, like "no listen address", "host unreachable" or "connection refused".<br/><br/>
-  * **Miner crashes/reboots**.<br/><br/>
-* **Witnesses lost at the challenger**: After successfuly delivering the witness to the challenger, the transaction fails to complete due to P2P or network problems at the challenger. In such cases, at Helium Explorer All Activity tab, the challenger shows a `Constructed Challenge` event, but not a `Challenged Beaconer` event.<br/><br/>
-* **Witnesses lost at the "max hotspots lottery"**: When the number of hotspots that witness a beacon exceed 14 (current `poc_max_witness_per_hop`), only 14 are selected to receive rewards.
+    sudo apt install php-cli
 
-This tool lets you analyze the causes for the witnesses lost at the local miner.
+If you are unable to install PHP at the miner OS, you should be able to do so inside docker. You can access the container with:
+
+    sudo docker exec -it miner sh   
+
+You may need to replace "miner" with the name of the docker container running the Helium miner. 
+
+Once inside the docker container, run the following to install PHP.
+
+    apk add php-cli 
+
+Note that any changes to the running docker container are not persistent and will be lost at the next reboot.
+
 
 ## Downloading
 
@@ -41,7 +45,7 @@ You can clone the repository with:
 Or download the tool with:
 
     wget -O processlogs.php https://raw.githubusercontent.com/inigoflores/helium-miner-log-analyzer/main/processlogs.php; chmod a+x processlogs.php
-    
+
 
 ## Tool usage
 
@@ -143,6 +147,23 @@ Or download the tool with:
 
 ## To Do
 
-* Add support form miners that don't have the log folders from the docker image mapped to the host.
 * Add option to export to CSV.
 * Run as a service and store data in a local database.
+
+
+## Understanding lost witnesses
+
+Only a fraction of the beacons witnessed by the miner make it to the blockchain.
+
+Reasons:
+
+* **Witnesses lost at the local miner** bacause of failure of delivery to the challenger due to:<br/><br/>
+  * **P2P or network errors**. These include:<br/><br/>
+    * **Timeout**, usually due to a relayed challenger.
+    * Challenger P2P address **not found** in the peer book.
+    * Other challenger related problems, like "no listen address", "host unreachable" or "connection refused".<br/><br/>
+  * **Miner crashes/reboots**.<br/><br/>
+* **Witnesses lost at the challenger**: After successfuly delivering the witness to the challenger, the transaction fails to complete due to P2P or network problems at the challenger. In such cases, at Helium Explorer All Activity tab, the challenger shows a `Constructed Challenge` event, but not a `Challenged Beaconer` event.<br/><br/>
+* **Witnesses lost at the "max hotspots lottery"**: When the number of hotspots that witness a beacon exceed 14 (current `poc_max_witness_per_hop`), only 14 are selected to receive rewards.
+
+This tool lets you analyze the causes for the witnesses lost at the local miner.
