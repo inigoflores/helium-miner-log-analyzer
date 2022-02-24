@@ -2,7 +2,7 @@
 
 Small tool that extracts witness data from Helium miner logs.
 
-It currently works for miner version `miner-arm64_2022.01.29.0_GA`. 
+It currently works for miner version `miner-amd64_2022.02.22.0_GA`. 
 
 It runs out of the box for the following miners:
 
