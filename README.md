@@ -49,7 +49,7 @@ Or download the tool with:
 
 ## Tool usage
 
-    $ ./processlogs.php [-a] [-l] [-s MMMM-dd-yy] [-e MMMM-dd-yy] [-p /FULL/PATH/TO/LOGS]
+    $ ./processlogs.php [-a] [-l] [-s YYYY-MM-DD] [-e YYYY-MM-DD] [-p /FULL/PATH/TO/LOGS]
 
 
     Options
@@ -58,9 +58,9 @@ Or download the tool with:
 
             -l      Show witness list 
 
-            -s      Specify a start date in MMMM-dd-yy format      
+            -s      Specify a start date in YYYY-MM-DD format      
 
-            -e      Specify an end date in MMMM-dd-yy format
+            -e      Specify an end date in YYYY-MM-DD format
 
             -p      Specify a full path to the miner logs folder
 
@@ -96,7 +96,7 @@ Or download the tool with:
 
 ### Show list of all witnesses between two dates
 
-    $ ./processlogs.php -l -s 2022-02-20 
+    $ ./processlogs.php -l -s 2022-02-20 -e 2022-02-21 
     
     Using logs in folder /home/pi/hnt/miner/log/
     
