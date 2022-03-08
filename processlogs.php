@@ -92,15 +92,20 @@ foreach (array_keys($opts) as $opt) switch ($opt) {
 
 /**
  * @param $beacons
- * @return string
+ * @return stringq
  */
 function generateStats($beacons) {
+
 
     if (empty($beacons)) {
         exit("No witnesses found\n");
     }
 
-    $sucessful = 0;
+    $startTime = DateTime::createFromFormat('Y-m-d H:i:s',explode('.',$beacons[0]['datetime'])[0]);
+    $endTime = DateTime::createFromFormat('Y-m-d H:i:s',explode('.',end($beacons)['datetime'])[0]);
+    $intervalInHours = ($endTime->getTimestamp() - $startTime->getTimestamp())/3600;
+
+    $successful = 0;
     $failedMaxRetry = 0;
     $failedIncomplete = 0;
     $failedUnkown = 0;
@@ -118,7 +123,7 @@ function generateStats($beacons) {
 
         // General Witnesses Overview
         if ($beacon['status']=='successfully sent') {
-            $sucessful++;
+            $successful++;
         } else if ($beacon['status']=='failed max retry') {
             $failedMaxRetry++;
         } else if ($beacon['status']=='failed to dial' || $beacon['status']=='incomplete') {
@@ -151,12 +156,12 @@ function generateStats($beacons) {
     }
 
     $total = sizeOf($beacons);
-    $totalFailed = $total - $sucessful;
-    //$totalFailedMaxRetry = $failedMaxRetryNotFound +  $failedMaxRetryTimeout + $failedMaxRetryHostUnreach +  $failedMaxRetryConRefused + $failedMaxRetryUnkown;
+    $totalFailed = $total - $successful;
+    $totalPerHour = round($total / $intervalInHours,2);
 
     $totalFailedOther = $failedNoListenAddress +  $failedConRefused + $failedHostUnreach;
 
-    $percentageSuccessful = round($sucessful/$total*100,2);
+    $percentageSuccessful = round($successful/$total*100,2);
     $percentageFailed = round($totalFailed/$total*100,2);
     $percentageFailedMaxRetry = round($failedMaxRetry/$total*100,2);
     $percentageFailedIncomplete = round($failedIncomplete/$total*100,2);
@@ -172,8 +177,9 @@ function generateStats($beacons) {
 
     $output = "\nGeneral Witnesses Overview  \n";
     $output.= "----------------------------------\n";
-    $output.= "Total witnesses                   = ". str_pad($total, 5, " ", STR_PAD_LEFT) . "\n";
-    $output.= "Succesfully delivered             = ". str_pad($sucessful, 5, " ", STR_PAD_LEFT) .
+    $output.= "Total witnesses                   = ". str_pad($total, 5, " ", STR_PAD_LEFT) .
+        str_pad(" ({$totalPerHour}/hour)", 13, " ", STR_PAD_LEFT)  . "\n";
+    $output.= "Succesfully delivered             = ". str_pad($successful, 5, " ", STR_PAD_LEFT) .
         str_pad("({$percentageSuccessful}%)", 9, " ", STR_PAD_LEFT)  . "\n";
     $output.= "Failed                            = ". str_pad($totalFailed, 5, " ", STR_PAD_LEFT) .
         str_pad("({$percentageFailed}%)", 9, " ", STR_PAD_LEFT) . " \n";
