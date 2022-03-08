@@ -199,7 +199,7 @@ function generateStats($beacons) {
         str_pad("({$percentageNotRelayed}%)", 9, " ", STR_PAD_LEFT) . " \n";
     $output.= "Relayed                           = ". str_pad($relayed, 5, " ", STR_PAD_LEFT) .
         str_pad("({$percentageRelayed}%)", 9, " ", STR_PAD_LEFT) . " \n";
-    $output.= "Unknown Relay Status              = ". str_pad($total-$notRelayed-$relayed, 5, " ", STR_PAD_LEFT) .
+    $output.= "Unknown (Probably Not Relayed)    = ". str_pad($total-$notRelayed-$relayed, 5, " ", STR_PAD_LEFT) .
         str_pad("({$percentageRelayUnknown}%)", 9, " ", STR_PAD_LEFT) . " \n";
 
     return $output;
@@ -257,8 +257,9 @@ function extractData($logsFolder, $startDate, $endDate){
             if (preg_match('/miner_onion_server:send_witness:{[0-9]+,[0-9]+} (?:re-)?sending witness at RSSI/', $line) ||
                 preg_match('/miner_onion_server:send_witness:{[0-9]+,[0-9]+} failed to dial challenger/', $line) ||
                 preg_match('/miner_onion_server:send_witness:{[0-9]+,[0-9]+} successfully sent witness to challenger/', $line) ||
-                preg_match('/miner_onion_server:send_witness:{[0-9]+,[0-9]+} failed to send witness, max retry/', $line
-                ))
+                preg_match('/miner_onion_server:send_witness:{[0-9]+,[0-9]+} failed to send witness, max retry/', $line) ||
+                preg_match('/libp2p_transport_relay:connect_to:{[0-9]+,[0-9]+} init relay transport with/', $line)
+                )
             {
                 $fields = explode(' ', $line);
                 $datetime = $fields[0] . " " . $fields[1];
@@ -276,6 +277,7 @@ function extractData($logsFolder, $startDate, $endDate){
                 $snr = $fields[13];
                 $status = "incomplete";
                 $beacons[$session] = array_merge((array)@$beacons[$session], compact('datetime', 'session', 'rssi', 'freq', 'snr', 'status'));
+                continue;
             }
 
             if (preg_match('/failed to dial challenger/', $line)) {
@@ -283,10 +285,8 @@ function extractData($logsFolder, $startDate, $endDate){
                 $reason = $fields[10];
                 if (strpos($line,'p2p-circuit')){
                     $relayed = 'yes';
-                } else if ($reason!='not_found') {
-                    $relayed = 'no';
                 } else {
-                    $relayed = '';
+                    $relayed = 'no';
                 }
 
                 switch (true) {
@@ -311,32 +311,47 @@ function extractData($logsFolder, $startDate, $endDate){
 
                 $failures = @$beacons[$session]['failures'] + 1;
                 $status = "failed to dial";
-                $beacons[$session] = array_merge((array)@$beacons[$session], compact('datetime', 'session', 'challenger', 'status', 'reason','reasonShort', 'failures','relayed'));
+                $beacons[$session] = array_merge((array)@$beacons[$session], compact('datetime', 'session', 'challenger', 'status', 'reason','reasonShort', 'relayed','failures'));
+                continue;
             }
 
             if (preg_match('/successfully sent witness to challenger/', $line)) {
                 $challenger = substr($fields[10], 6, -1);
-                $relayed = strpos($line,'p2p-circuit')?'yes':'no';
                 $rssi = str_pad(substr($fields[13], 0, -1), 4, " ", STR_PAD_LEFT);
                 $freq = substr($fields[15], 0, -1);
                 $snr = $fields[17];
                 $status = "successfully sent";
                 $reason = "";
                 $reasonShort = "";
-                $beacons[$session] = array_merge((array)@$beacons[$session], compact('datetime', 'session', 'challenger', 'relayed', 'rssi', 'freq', 'snr', 'status', 'reason','reasonShort'));
+                $beacons[$session] = array_merge((array)@$beacons[$session], compact('datetime', 'session', 'challenger', 'rssi', 'freq', 'snr', 'status', 'reason','reasonShort'));
+                continue;
             }
 
             if (preg_match('/failed to send witness, max retry/', $line)) {
 
                 $status = "failed max retry";
                 $beacons[$session] = array_merge((array)@$beacons[$session], compact('datetime', 'session', 'status'));
+                continue;
             }
+
+            if (preg_match('/init relay transport/', $line)) {
+                $relayed = 'yes';
+                $beacons[$session] = array_merge((array)@$beacons[$session], compact('relayed'));
+            }
+        }
+    }
+    //
+    foreach ($beacons as $session => $beacon) {
+        if (empty(@$beacon['rssi'])) {
+           unset($beacons[$session]);
         }
     }
 
     usort($beacons, function($a, $b) {
         return $a['datetime'] <=> $b['datetime'];
     });
+
+
 
     return $beacons;
 }
