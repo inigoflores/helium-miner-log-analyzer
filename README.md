@@ -2,7 +2,7 @@
 
 Small tool that extracts witness data from Helium miner logs.
 
-It currently works for miner version `miner-amd64_2022.02.22.0_GA`. 
+It currently works for miner version `miner-amd64_2022.03.07.0_GA`. 
 
 It runs out of the box for the following miners:
 
@@ -147,7 +147,7 @@ Or download the tool with:
 
 ## To Do
 
-* Add option to export to CSV.
+* Add option to export to CSV.  Until then, you can use the `>` operator to send the results to a text file: `./processlogs.php > logs.txt`
 * Run as a service and store data in a local database.
 
 
