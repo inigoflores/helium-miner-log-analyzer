@@ -2,14 +2,13 @@
 
 Small tool that extracts witness data from Helium miner logs.
 
-It currently works for miner version `miner-amd64_2022.02.22.0_GA`. 
+It currently works for miner version `miner-arm64_2022.03.07.0_GA`. 
 
 It runs out of the box for the following miners:
 
 * Controllino
 * Panther X2
 * Pisces P100
-* Sensecap M1
 
 It should work for other miners that have the logs folder mapped to the host, for which you will need to provide the folder path as a command-line argument.
 
@@ -49,7 +48,7 @@ Or download the tool with:
 
 ## Tool usage
 
-    $ ./processlogs.php [-a] [-l] [-s YYYY-MM-DD] [-e YYYY-MM-DD] [-p /FULL/PATH/TO/LOGS]
+    $ ./processlogs.php [-a] [-l] [-s YYYY-MM-DD] [-e YYYY-MM-DD] [-p /FULL/PATH/TO/LOGS]  [-c[FILENAME.CSV]]
 
 
     Options
@@ -64,6 +63,8 @@ Or download the tool with:
 
             -p      Specify a full path to the miner logs folder
 
+            -c      Create CSV. If no filename is provided, it outputs to stdout
+
 
 ## Examples
 
@@ -75,7 +76,7 @@ Or download the tool with:
     
     General Witnesses Overview
     ----------------------------------
-    Total witnesses                   =   263
+    Total witnesses                   =   263 (4.91/hour)
     Succesfully delivered             =   225 (85.55%)
     Failed                            =    38 (14.45%)
     ├── Max retry    =   38 (14.45%)
@@ -145,9 +146,14 @@ Or download the tool with:
     2022-02-20 13:20:52.881 | 0.20242.48 | -128 | 867.3 | -18.2 | -109.8 | 112Cech1D9waERW1toMjZsJWmtPCm8oAdAiKgp4es3rQ75vZSLTj | no    | successfully sent |     1 |
     2022-02-20 13:30:21.538 | 0.19200.48 | -116 | 867.1 |  -3.8 | -112.2 | 112n7s9VJDjYgL4VeNTWYowyvZiChVLwDScndpdiBLPu9SAgtnuC | no    | successfully sent |     1 |
 
+### Export to CSV
+
+    $ ./processlogs.php -cwitnesses.csv 
+    Data saved to witnesses.csv
+
+
 ## To Do
 
-* Add option to export to CSV.
 * Run as a service and store data in a local database.
 
 

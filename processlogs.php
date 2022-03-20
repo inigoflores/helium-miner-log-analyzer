@@ -17,7 +17,7 @@ $logsFolder = './';
 $logsFolders = [
         'Docker'         => '/var/log/miner/', //Also Controllino
         'Pisces P100'    => '/home/pi/hnt/miner/log/',
-        'Sensecap M1'    => 'in /mnt/data/docker/volumes/xxxxxxx_miner-log/_data/',
+        'Sensecap M1'    => 'in /mnt/data/docker/volumes/xxxxxxx_miner-log/_data/', 
         'Milesight UG65' => '/mnt/mmcblk0p1/miner_data/log/', //adding it for future use,as PHP and opkg are missing (OpenWrt)
         'Panther X2'     => '/opt/panther-x2/miner_data/log/'
 ];
@@ -33,11 +33,12 @@ $startDate = "2000-01-01";
 $endDate = "2030-01-01";
 
 // Command line options
-$options = ["p:","s:","e:","a","l"];
+$options = ["p:","s:","e:","a","l","c::"];
 $opts = getopt(implode("",$options));
 
-if (!isset($opts['l'])) {
-    $opts['a']=false;
+// Defaults to stats when called
+if (!(isset($opts['l']) || isset($opts['c']))) {
+    $opts['a']=true;
 }
 
 foreach ($options as $key=>$val){
@@ -81,6 +82,12 @@ foreach (array_keys($opts) as $opt) switch ($opt) {
         $beacons = extractData($logsFolder,$startDate,$endDate);
         echo generateList($beacons);
         exit(1);
+        
+    case 'c':
+        $beacons = extractData($logsFolder,$startDate,$endDate);
+        $filename = $opts['c'];
+        echo generateCSV($beacons,$filename);
+        exit(1);        
 }
 
 
@@ -92,7 +99,7 @@ foreach (array_keys($opts) as $opt) switch ($opt) {
 
 /**
  * @param $beacons
- * @return stringq
+ * @return string
  */
 function generateStats($beacons) {
 
@@ -230,14 +237,13 @@ function generateList($beacons) {
         $relayed = @str_pad($beacon['relayed'],5, " ", STR_PAD_RIGHT);
         $reasonShort = @$beacon['reasonShort'];
         $reason = @$beacon['reason'];
-        $session = str_pad($beacon['session'],10, " ", STR_PAD_LEFT);;
+        $session = str_pad($beacon['session'],11, " ", STR_PAD_LEFT);;
 
         $output.=@"{$beacon['datetime']} | {$session} | {$rssi} | {$beacon['freq']} | {$snr} | {$noise} | {$challenger} | $relayed | {$status} | {$failures} | {$reasonShort} \n";
 
     }
     return $output;
 }
-
 
 /**
  * @param $logsFolder
@@ -357,8 +363,51 @@ function extractData($logsFolder, $startDate, $endDate){
         return $a['datetime'] <=> $b['datetime'];
     });
 
-
-
     return $beacons;
+}
+
+
+/**
+ * @param $beacons
+ * @return string
+ */
+function generateCSV($beacons, $filename=false) {
+    $columns = ['Date','Session','RSSI','Freq','SNR','Noise','Challenger','Relay','Status','Fails','Reason'];
+    $data = array2csv($columns);
+    foreach ($beacons as $beacon){
+        $noise = number_format((float) ($beacon['rssi'] - $beacon['snr']),1);
+        $failures = empty($beacon['failures'])?0:$beacon['failures'];
+        $data.= @array2csv([
+            $beacon['datetime'],$beacon['session'],$beacon['rssi'],
+            $beacon['freq'],$beacon['snr'],$noise,$beacon['challenger'],
+            $beacon['relayed'],$beacon['status'],$failures,$beacon['reasonShort']]);
+
+    }
+
+    if ($filename) {
+        $data = "SEP=;" . $data;
+        file_put_contents($filename,$data);
+        return "Data saved to $filename\n";
+    }
+
+    return $data;
+
+}
+
+/**
+ * @param $fields
+ * @param string $delimiter
+ * @param string $enclosure
+ * @param string $escape_char
+ * @return false|string
+ */
+function array2csv($fields, $delimiter = ",", $enclosure = '"', $escape_char = '\\')
+{
+    $buffer = fopen('php://temp', 'r+');
+    fputcsv($buffer, $fields, $delimiter, $enclosure, $escape_char);
+    rewind($buffer);
+    $csv = fgets($buffer);
+    fclose($buffer);
+    return $csv;
 }
 
