@@ -268,6 +268,7 @@ function extractData($logsFolder, $startDate, $endDate){
             $buf = gzdecode($buf);
         }
         $lines = explode(PHP_EOL, $buf);
+        unset($buf);
 
         foreach ($lines as $line) {
 
