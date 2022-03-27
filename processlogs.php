@@ -253,7 +253,7 @@ function generateList($beacons) {
 function extractData($logsFolder, $startDate, $endDate){
 
     $beacons = [];
-    $filenames = glob("{$logsFolder}console.log*");
+    $filenames = glob("{$logsFolder}console*.log*");
 
     if (empty($filenames)){
         exit ("No logs found. Please chdir to the Helium miner logs folder or specify a path.\n");
