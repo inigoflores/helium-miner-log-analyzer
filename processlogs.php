@@ -253,7 +253,7 @@ function generateList($beacons) {
 function extractData($logsFolder, $startDate, $endDate){
 
     $beacons = [];
-    $filenames = glob("{$logsFolder}console.log*");
+    $filenames = glob("{$logsFolder}console*.log*");
 
     if (empty($filenames)){
         exit ("No logs found. Please chdir to the Helium miner logs folder or specify a path.\n");
@@ -263,7 +263,12 @@ function extractData($logsFolder, $startDate, $endDate){
 
     foreach ($filenames as $filename) {
 
-        $lines = file( $filename, FILE_IGNORE_NEW_LINES);
+        $buf = file_get_contents($filename);
+        if(substr($filename, -3) == '.gz') {
+            $buf = gzdecode($buf);
+        }
+        $lines = explode(PHP_EOL, $buf);
+        unset($buf);
 
         foreach ($lines as $line) {
 
