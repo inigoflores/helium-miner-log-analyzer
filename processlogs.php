@@ -263,11 +263,12 @@ function extractData($logsFolder, $startDate, $endDate){
 
     foreach ($filenames as $filename) {
 
-        $buf = file_get_contents($filename);
+        $buf = file_get_contents($filename,);
         if(substr($filename, -3) == '.gz') {
             $buf = gzdecode($buf);
         }
-        $lines = explode(PHP_EOL, $buf);
+
+        $lines = explode("\n", $buf);
         unset($buf);
 
         foreach ($lines as $line) {
