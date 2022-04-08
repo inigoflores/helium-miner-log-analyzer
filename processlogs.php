@@ -142,16 +142,18 @@ function generateStats($beacons) {
 
         // Failure Reasons
         if ($beacon['status']=='failed max retry') {
-            if ($beacon['reasonShort']=='not found') {
-                $failedNotFound++;
-            } else if ($beacon['reasonShort']=='timeout') {
-                $failedTimeout++;
-            } else if ($beacon['reasonShort']=='no listen address') {
-                $failedNoListenAddress++;
-            } else if ($beacon['reasonShort']=='connection refused') {
-                $failedConRefused++;
-            } else if ($beacon['reasonShort']=='host unreachable') {
-                $failedHostUnreach++;
+            if (!empty($beacon['reasonShort'])) {
+                if ($beacon['reasonShort']=='not found') {
+                    $failedNotFound++;
+                } else if ($beacon['reasonShort']=='timeout') {
+                    $failedTimeout++;
+                } else if ($beacon['reasonShort']=='no listen address') {
+                    $failedNoListenAddress++;
+                } else if ($beacon['reasonShort']=='connection refused') {
+                    $failedConRefused++;
+                } else if ($beacon['reasonShort']=='host unreachable') {
+                    $failedHostUnreach++;
+                }
             }
         }
 
@@ -224,7 +226,7 @@ function generateStats($beacons) {
  * @return string
  */
 function generateList($beacons) {
-    $output = "Date                    | Session    | RSSI | Freq  | SNR   | Noise  | Challenger                                           | Relay | Status            | Fails | Reason \n";
+    $output = "Date                    | Session     | RSSI | Freq  | SNR   | Noise  | Challenger                                           | Relay | Status            | Fails | Reason \n";
     $output.= "------------------------------------------------------------------------------------------------------------------------------------------------------------------------ \n";
 
     foreach ($beacons as $beacon){
