@@ -20,7 +20,7 @@ $logsFolders = [
         'Sensecap M1'    => 'in /mnt/data/docker/volumes/xxxxxxx_miner-log/_data/',
         'Milesight UG65' => '/mnt/mmcblk0p1/miner_data/log/', //adding it for future use,as PHP and opkg are missing (OpenWrt)
         'Panther X2'     => '/opt/panther-x2/miner_data/log/',
-        'RHF2S308'       => '/opt/helium/miner_data/log/'
+        'RHF2S308'       => '/opt/helium/miner_data/log/',
         'HeliumDIY'      => '/home/pi/miner_data/log/'
 ];
 

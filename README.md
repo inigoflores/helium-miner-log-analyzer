@@ -11,6 +11,7 @@ It runs out of the box for the following miners:
 * Pisces P100
 * SenseCAP M1
 * Rising HF RHF2S308
+* HeliumDIY
 
 It should work for other miners that have the logs folder mapped to the host, for which you will need to provide the folder path as a command-line argument.
 
