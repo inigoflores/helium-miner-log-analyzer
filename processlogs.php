@@ -8,7 +8,7 @@
  * @author     Iñigo Flores
  * @copyright  2022 Iñigo Flores
  * @license    https://opensource.org/licenses/MIT  MIT License
- * @version    0.01
+ * @version    0.02
  * @link       https://github.com/inigoflores/helium-miner-log-analyzer
   */
 
@@ -227,10 +227,16 @@ function generateStats($beacons) {
  * @return string
  */
 function generateList($beacons) {
+
+    $systemDate = new DateTime();
+
     $output = "Date                    | Session     | RSSI | Freq  | SNR   | Noise  | Challenger                                           | Relay | Status            | Fails | Reason \n";
     $output.= "------------------------------------------------------------------------------------------------------------------------------------------------------------------------ \n";
 
     foreach ($beacons as $beacon){
+
+        $datetime = DateTime::createFromFormat('Y-m-d H:i:s.u',$beacon['datetime'], new DateTimeZone( 'UTC' ));
+        $datetime->setTimezone($systemDate->getTimezone());
 
         $rssi = str_pad($beacon['rssi'], 4, " ", STR_PAD_LEFT);
         $snr = str_pad($beacon['snr'], 5, " ", STR_PAD_LEFT);
@@ -240,10 +246,11 @@ function generateList($beacons) {
         $challenger = @str_pad($beacon['challenger'],52, " ", STR_PAD_RIGHT);
         $relayed = @str_pad($beacon['relayed'],5, " ", STR_PAD_RIGHT);
         $reasonShort = @$beacon['reasonShort'];
-        $reason = @$beacon['reason'];
+        $datetimeStr = $datetime->format("d-m-Y H:i:s");
+        //$reason = @$beacon['reason'];
         $session = str_pad($beacon['session'],11, " ", STR_PAD_LEFT);;
 
-        $output.=@"{$beacon['datetime']} | {$session} | {$rssi} | {$beacon['freq']} | {$snr} | {$noise} | {$challenger} | $relayed | {$status} | {$failures} | {$reasonShort} \n";
+        $output.=@"{$datetimeStr} | {$session} | {$rssi} | {$beacon['freq']} | {$snr} | {$noise} | {$challenger} | $relayed | {$status} | {$failures} | {$reasonShort} \n";
 
     }
     return $output;
