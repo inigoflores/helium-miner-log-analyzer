@@ -230,8 +230,8 @@ function generateList($beacons) {
 
     $systemDate = new DateTime();
 
-    $output = "Date                    | Session     | RSSI | Freq  | SNR   | Noise  | Challenger                                           | Relay | Status            | Fails | Reason \n";
-    $output.= "------------------------------------------------------------------------------------------------------------------------------------------------------------------------ \n";
+    $output = "Date                | Session     | RSSI | Freq  | SNR   | Noise  | Challenger                                           | Relay | Status            | Fails | Reason \n";
+    $output.= "---------------------------------------------------------------------------------------------------------------------------------------------------------------------- \n";
 
     foreach ($beacons as $beacon){
 
