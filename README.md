@@ -9,7 +9,6 @@ It runs out of the box for the following miners:
 * Controllino
 * Panther X2
 * Pisces P100
-* SenseCAP M1
 * Rising HF RHF2S308
 * HeliumDIY
 
