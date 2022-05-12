@@ -215,11 +215,11 @@ function extractData($logsFolder, $startDate, $endDate){
             }
 
             if (preg_match('/sending witness at RSSI/', $line)){
-                $rssi = str_pad(substr($fields[9], 0, -1), 4, " ", STR_PAD_LEFT);
+                $rssi = substr($fields[9], 0, -1);
                 $freq = substr($fields[11], 0, -1);
                 $snr = $fields[13];
                 $status = "successfully sent";
-                $beacons[$rssi.$freq.$snr] = array_merge((array)@$beacons[$session], compact('datetime', 'rssi', 'freq', 'snr', 'status'));
+                $beacons[$rssi.$freq.$snr] = array_merge((array)@$beacons[$rssi.$freq.$snr], compact('datetime', 'rssi', 'freq', 'snr', 'status'));
                 continue;
             }
 
