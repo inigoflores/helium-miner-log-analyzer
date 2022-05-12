@@ -17,7 +17,6 @@ $logsFolder = './';
 $logsFolders = [
         'Docker'         => '/var/log/miner/', //Also Controllino
         'Pisces P100'    => '/home/pi/hnt/miner/log/',
-        //'Sensecap M1'    => 'in /mnt/data/docker/volumes/xxxxxxx_miner-log/_data/', // Not supported out of the box, only inside docker
         'Milesight UG65' => '/mnt/mmcblk0p1/miner_data/log/', //adding it for future use,as PHP and opkg are missing (OpenWrt)
         'Panther X2'     => '/opt/panther-x2/miner_data/log/',
         'RHF2S308'       => '/opt/helium/miner_data/log/',
@@ -115,76 +114,22 @@ function generateStats($beacons) {
     $intervalInHours = ($endTime->getTimestamp() - $startTime->getTimestamp())/3600;
 
     $successful = 0;
-    $failedMaxRetry = 0;
-    $failedIncomplete = 0;
-    $failedUnkown = 0;
-
-    $failedNotFound = 0;
-    $failedTimeout = 0;
-    $failedNoListenAddress = 0;
-    $failedConRefused = 0;
-    $failedHostUnreach = 0;
-
-    $relayed = 0;
-    $notRelayed = 0;
 
     foreach ($beacons as $beacon){
 
         // General Witnesses Overview
         if ($beacon['status']=='successfully sent') {
             $successful++;
-        } else if ($beacon['status']=='failed max retry') {
-            $failedMaxRetry++;
-        } else if ($beacon['status']=='failed to dial' || $beacon['status']=='incomplete') {
-            $failedIncomplete++;
-        } else {
-            $failedUnkown++;
         }
 
-        // Failure Reasons
-        if ($beacon['status']=='failed max retry') {
-            if (!empty($beacon['reasonShort'])) {
-                if ($beacon['reasonShort']=='not found') {
-                    $failedNotFound++;
-                } else if ($beacon['reasonShort']=='timeout') {
-                    $failedTimeout++;
-                } else if ($beacon['reasonShort']=='no listen address') {
-                    $failedNoListenAddress++;
-                } else if ($beacon['reasonShort']=='connection refused') {
-                    $failedConRefused++;
-                } else if ($beacon['reasonShort']=='host unreachable') {
-                    $failedHostUnreach++;
-                }
-            }
-        }
-
-        //Relayed Challengers
-        if (@$beacon['relayed'] == "yes") {
-            $relayed++;
-        } else if (@$beacon['relayed'] == "no") {
-            $notRelayed++;
-        }
     }
 
     $total = sizeOf($beacons);
     $totalFailed = $total - $successful;
     $totalPerHour = round($total / $intervalInHours,2);
 
-    $totalFailedOther = $failedNoListenAddress +  $failedConRefused + $failedHostUnreach;
-
     $percentageSuccessful = round($successful/$total*100,2);
     $percentageFailed = round($totalFailed/$total*100,2);
-    $percentageFailedMaxRetry = round($failedMaxRetry/$total*100,2);
-    $percentageFailedIncomplete = round($failedIncomplete/$total*100,2);
-
-    $percentageFailedNotFound = round($failedNotFound/$total*100,2);
-    $percentageFailedTimeout = round($failedTimeout/$total*100,2);
-    $percentageFailedOther = round($totalFailedOther/$total*100,2);
-
-
-    $percentageNotRelayed = round($notRelayed/$total*100,2);
-    $percentageRelayed = round($relayed/$total*100,2);
-    $percentageRelayUnknown = round(($total-$notRelayed-$relayed)/$total*100,2);
 
     $output = "\nGeneral Witnesses Overview  \n";
     $output.= "----------------------------------\n";
@@ -194,30 +139,7 @@ function generateStats($beacons) {
         str_pad("({$percentageSuccessful}%)", 9, " ", STR_PAD_LEFT)  . "\n";
     $output.= "Failed                            = ". str_pad($totalFailed, 5, " ", STR_PAD_LEFT) .
         str_pad("({$percentageFailed}%)", 9, " ", STR_PAD_LEFT) . " \n";
-    $output.= "  ├── Max retry    = ". str_pad($failedMaxRetry, 4, " ", STR_PAD_LEFT) .
-        str_pad("({$percentageFailedMaxRetry}%)", 9, " ", STR_PAD_LEFT) . " \n";
-    $output.= "  └── Crash/reboot = ". str_pad($failedIncomplete, 4, " ", STR_PAD_LEFT) .
-        str_pad("({$percentageFailedIncomplete}%)", 9, " ", STR_PAD_LEFT) . " \n";
 
-
-    $output.= "\nMax Retry Failure Reasons \n";
-    $output.= "----------------------------------\n";
-    $output.= "Timeout                           = ". str_pad($failedTimeout, 5, " ", STR_PAD_LEFT) .
-        str_pad("({$percentageFailedTimeout}%)", 9, " ", STR_PAD_LEFT) . " \n";
-    $output.= "Not Found                         = ". str_pad($failedNotFound, 5, " ", STR_PAD_LEFT) .
-        str_pad("({$percentageFailedNotFound}%)", 9, " ", STR_PAD_LEFT) . " \n";
-
-    $output.= "Other challenger issues           = ". str_pad($totalFailedOther, 5, " ", STR_PAD_LEFT) .
-        str_pad("({$percentageFailedOther}%)", 9, " ", STR_PAD_LEFT) . " \n";
-
-    $output.= "\nChallengers \n";
-    $output.= "----------------------------------\n";
-    $output.= "Not Relayed                       = ". str_pad($notRelayed, 5, " ", STR_PAD_LEFT) .
-        str_pad("({$percentageNotRelayed}%)", 9, " ", STR_PAD_LEFT) . " \n";
-    $output.= "Relayed                           = ". str_pad($relayed, 5, " ", STR_PAD_LEFT) .
-        str_pad("({$percentageRelayed}%)", 9, " ", STR_PAD_LEFT) . " \n";
-    $output.= "Unknown (Probably Not Relayed)    = ". str_pad($total-$notRelayed-$relayed, 5, " ", STR_PAD_LEFT) .
-        str_pad("({$percentageRelayUnknown}%)", 9, " ", STR_PAD_LEFT) . " \n";
 
     return $output;
 }
@@ -230,8 +152,8 @@ function generateList($beacons) {
 
     $systemDate = new DateTime();
 
-    $output = "Date                | Session     | RSSI | Freq  | SNR   | Noise  | Challenger                                           | Relay | Status            | Fails | Reason \n";
-    $output.= "---------------------------------------------------------------------------------------------------------------------------------------------------------------------- \n";
+    $output = "Date                | Freq  | RSSI | SNR   | Noise  | Status  \n";
+    $output.= "------------------------------------------------------------- \n";
 
     foreach ($beacons as $beacon){
 
@@ -242,15 +164,11 @@ function generateList($beacons) {
         $snr = str_pad($beacon['snr'], 5, " ", STR_PAD_LEFT);
         $noise = str_pad(number_format((float) ($beacon['rssi'] - $beacon['snr']),1),6,  " ", STR_PAD_LEFT);
         $status = str_pad($beacon['status'], 17, " ", STR_PAD_RIGHT);
-        $failures = str_pad(empty($beacon['failures'])?0:$beacon['failures'], 5, " ", STR_PAD_LEFT);
-        $challenger = @str_pad($beacon['challenger'],52, " ", STR_PAD_RIGHT);
-        $relayed = @str_pad($beacon['relayed'],5, " ", STR_PAD_RIGHT);
         $reasonShort = @$beacon['reasonShort'];
         $datetimeStr = $datetime->format("d-m-Y H:i:s");
         //$reason = @$beacon['reason'];
-        $session = str_pad($beacon['session'],11, " ", STR_PAD_LEFT);;
 
-        $output.=@"{$datetimeStr} | {$session} | {$rssi} | {$beacon['freq']} | {$snr} | {$noise} | {$challenger} | $relayed | {$status} | {$failures} | {$reasonShort} \n";
+        $output.=@"{$datetimeStr} | {$beacon['freq']} | {$rssi} | {$snr} | {$noise} | {$status}  \n";
 
     }
     return $output;
@@ -283,12 +201,8 @@ function extractData($logsFolder, $startDate, $endDate){
 
         foreach ($lines as $line) {
 
-            if (preg_match('/miner_onion_server:send_witness:{[0-9]+,[0-9]+} (?:re-)?sending witness at RSSI/', $line) ||
-                preg_match('/miner_onion_server:send_witness:{[0-9]+,[0-9]+} failed to dial challenger/', $line) ||
-                preg_match('/miner_onion_server:send_witness:{[0-9]+,[0-9]+} successfully sent witness to challenger/', $line) ||
-                preg_match('/miner_onion_server:send_witness:{[0-9]+,[0-9]+} failed to send witness, max retry/', $line) ||
-                preg_match('/libp2p_transport_relay:connect_to:{[0-9]+,[0-9]+} init relay transport with/', $line)
-                )
+            if (preg_match('/miner_onion_server_light:decrypt:{[0-9]+,[0-9]+} (?:re-)?sending witness at RSSI/', $line) ||
+               (preg_match('/@miner_poc_grpc_client_statem:send_report:{[0-9]+,[0-9]+} failed to submit report/', $line)))
             {
                 $fields = explode(' ', $line);
                 $datetime = $fields[0] . " " . $fields[1];
@@ -304,69 +218,24 @@ function extractData($logsFolder, $startDate, $endDate){
                 $rssi = str_pad(substr($fields[9], 0, -1), 4, " ", STR_PAD_LEFT);
                 $freq = substr($fields[11], 0, -1);
                 $snr = $fields[13];
-                $status = "incomplete";
-                $beacons[$session] = array_merge((array)@$beacons[$session], compact('datetime', 'session', 'rssi', 'freq', 'snr', 'status'));
-                continue;
-            }
-
-            if (preg_match('/failed to dial challenger/', $line)) {
-                $challenger = substr($fields[9], 6, -2);
-                $reason = $fields[10];
-                if (strpos($line,'p2p-circuit')){
-                    $relayed = 'yes';
-                } else {
-                    $relayed = 'no';
-                }
-
-                switch (true) {
-                    case strpos($reason,'not_found') !== FALSE:
-                        $reasonShort = "not found";
-                        break;
-                    case strpos($reason,'timeout') !== FALSE:
-                        $reasonShort = "timeout";
-                        break;
-                    case strpos($reason,'econnrefused') !== FALSE:
-                        $reasonShort = "connection refused";
-                        break;
-                    case strpos($reason,',ehostunreach') !== FALSE:
-                        $reasonShort = "host unreachable";
-                        break;
-                    case strpos($reason,'no_listen_addr') !== FALSE:
-                        $reasonShort = "no listen address";
-                        break;
-                    default:
-                        $reasonShort = "";
-                };
-
-                $failures = @$beacons[$session]['failures'] + 1;
-                $status = "failed to dial";
-                $beacons[$session] = array_merge((array)@$beacons[$session], compact('datetime', 'session', 'challenger', 'status', 'reason','reasonShort', 'relayed','failures'));
-                continue;
-            }
-
-            if (preg_match('/successfully sent witness to challenger/', $line)) {
-                $challenger = substr($fields[10], 6, -1);
-                $rssi = str_pad(substr($fields[13], 0, -1), 4, " ", STR_PAD_LEFT);
-                $freq = substr($fields[15], 0, -1);
-                $snr = $fields[17];
                 $status = "successfully sent";
-                $reason = "";
-                $reasonShort = "";
-                $beacons[$session] = array_merge((array)@$beacons[$session], compact('datetime', 'session', 'challenger', 'rssi', 'freq', 'snr', 'status', 'reason','reasonShort'));
+                $beacons[$rssi.$freq.$snr] = array_merge((array)@$beacons[$session], compact('datetime', 'rssi', 'freq', 'snr', 'status'));
                 continue;
             }
 
-            if (preg_match('/failed to send witness, max retry/', $line)) {
+            if (preg_match('/failed to submit report/', $line)){
+                $temp = explode('<<',$fields[13]);
+                $temp1 = explode("," , $temp[1]);
+                $temp3 = explode("," , $temp[3]);
 
-                $status = "failed max retry";
-                $beacons[$session] = array_merge((array)@$beacons[$session], compact('datetime', 'session', 'status'));
+                $rssi = $temp1[sizeof($temp1)-2];
+                $freq = $temp3[2];
+                $snr = $temp3[1];
+                $status = "failed";
+                $beacons[$rssi.$freq.$snr] = array_merge((array)@$beacons[$session], compact('datetime', 'rssi', 'freq', 'snr', 'status'));
                 continue;
             }
 
-            if (preg_match('/init relay transport/', $line)) {
-                $relayed = 'yes';
-                $beacons[$session] = array_merge((array)@$beacons[$session], compact('relayed'));
-            }
         }
     }
     //
@@ -389,16 +258,12 @@ function extractData($logsFolder, $startDate, $endDate){
  * @return string
  */
 function generateCSV($beacons, $filename=false) {
-    $columns = ['Date','Session','RSSI','Freq','SNR','Noise','Challenger','Relay','Status','Fails','Reason'];
+    $columns = ['Date','Freq','RSSI','SNR','Noise','Status'];
     $data = array2csv($columns);
     foreach ($beacons as $beacon){
         $noise = number_format((float) ($beacon['rssi'] - $beacon['snr']),1);
-        $failures = empty($beacon['failures'])?0:$beacon['failures'];
         $data.= @array2csv([
-            $beacon['datetime'],$beacon['session'],$beacon['rssi'],
-            $beacon['freq'],$beacon['snr'],$noise,$beacon['challenger'],
-            $beacon['relayed'],$beacon['status'],$failures,$beacon['reasonShort']]);
-
+            $beacon['datetime'],$beacon['freq'],$beacon['rssi'],$beacon['snr'],$noise, $beacon['status']]);
     }
 
     if ($filename) {
