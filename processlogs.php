@@ -232,7 +232,7 @@ function extractData($logsFolder, $startDate, $endDate){
                 $freq = $temp3[2];
                 $snr = $temp3[1];
                 $status = "failed";
-                $beacons[$rssi.$freq.$snr] = array_merge((array)@$beacons[$session], compact('datetime', 'rssi', 'freq', 'snr', 'status'));
+                $beacons[$rssi.$freq.$snr] = array_merge((array)@$beacons[$rssi.$freq.$snr], compact('datetime', 'rssi', 'freq', 'snr', 'status'));
                 continue;
             }
 
